@@ -63,6 +63,7 @@ public class EmployeeManager {
                 }
 
             } catch (Exception exception) {
+                System.out.println("Error loading employee data.");
             }
 
             System.out.println("Data Loaded.");
@@ -80,6 +81,7 @@ public class EmployeeManager {
                 );
 
             } catch (Exception exception) {
+                System.out.println("Error loading employee data.");
             }
 
             System.out.println("Data Loaded.");
@@ -92,28 +94,35 @@ public class EmployeeManager {
                 appendEmployee(args[0].substring(1));
 
             } catch (Exception exception) {
+                System.out.println("Error adding employee.");
             }
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("?")) {
+        } else if (args[0].startsWith("?")) {
 
             System.out.println("Loading data ...");
 
             try {
                 String[] employees = readEmployees();
+                String searchName = args[0].substring(1).trim();
+                boolean employeeFound = false;
 
-                boolean found = false;
+                for (String employee : employees) {
 
-                for (int i = 0; i < employees.length && !found; i++) {
-
-                    if (employees[i].equals(args[0].substring(1))) {
-                        System.out.println("Employee found!");
-                        found = true;
+                    if (employee.trim().equalsIgnoreCase(searchName)) {
+                        System.out.println("Employee found: " + employee.trim());
+                        employeeFound = true;
+                        break;
                     }
                 }
 
+                if (!employeeFound) {
+                    System.out.println("Employee not found: " + searchName);
+                }
+
             } catch (Exception exception) {
+                System.out.println("Error searching employee.");
             }
 
             System.out.println("Data Loaded.");
@@ -145,6 +154,7 @@ public class EmployeeManager {
                 System.out.println(wordCount + " word(s) found " + characters.length);
 
             } catch (Exception exception) {
+                System.out.println("Error counting words.");
             }
 
             System.out.println("Data Loaded.");
@@ -166,6 +176,7 @@ public class EmployeeManager {
                 writeEmployees(employees);
 
             } catch (Exception exception) {
+                System.out.println("Error updating employee.");
             }
 
             System.out.println("Data Updated.");
@@ -184,6 +195,7 @@ public class EmployeeManager {
                 writeEmployees(employeeList.toArray(new String[0]));
 
             } catch (Exception exception) {
+                System.out.println("Error deleting employee.");
             }
 
             System.out.println("Data Deleted.");
