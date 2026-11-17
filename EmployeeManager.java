@@ -8,6 +8,13 @@ public class EmployeeManager {
 
     public static void main(String[] args) {
 
+        // Check the number of arguments
+        if (args.length != 1) {
+            System.out.println("Error: Please provide exactly one argument.");
+            System.out.println("Usage: java EmployeeManager [l|s|+name|?name|c|uname|dname]");
+            return;
+        }
+
         // Check arguments
         if (args[0].equals("l")) {
 
