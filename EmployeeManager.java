@@ -1,5 +1,5 @@
 
-// File Name: EmployeeManager.java
+ // File Name: EmployeeManager.java
 
 import java.io.*;
 import java.util.*;
@@ -50,8 +50,36 @@ public class EmployeeManager {
             return;
         }
 
+        String command = args[0].trim();
+
+        // Check for invalid arguments
+        if (command.isEmpty() ||
+            (!command.equals("l") &&
+             !command.equals("s") &&
+             !command.equals("c") &&
+             !command.startsWith("+") &&
+             !command.startsWith("?") &&
+             !command.startsWith("u") &&
+             !command.startsWith("d"))) {
+
+            System.out.println("Error: Invalid command.");
+            System.out.println("Please enter a valid command.");
+            System.out.println("Usage: java EmployeeManager [l|s|+name|?name|c|uname|dname]");
+            return;
+        }
+
+        // Check for missing employee name
+        if (command.equals("+") ||
+            command.equals("?") ||
+            command.equals("u") ||
+            command.equals("d")) {
+
+            System.out.println("Error: Employee name is required.");
+            return;
+        }
+
         // Load employee data
-        if (args[0].equals("l")) {
+        if (command.equals("l")) {
 
             System.out.println("Loading data ...");
 
@@ -68,7 +96,7 @@ public class EmployeeManager {
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].equals("s")) {
+        } else if (command.equals("s")) {
 
             System.out.println("Loading data ...");
 
@@ -86,12 +114,12 @@ public class EmployeeManager {
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("+")) {
+        } else if (command.startsWith("+")) {
 
             System.out.println("Loading data ...");
 
             try {
-                appendEmployee(args[0].substring(1));
+                appendEmployee(command.substring(1).trim());
 
             } catch (Exception exception) {
                 System.out.println("Error adding employee.");
@@ -99,13 +127,13 @@ public class EmployeeManager {
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].startsWith("?")) {
+        } else if (command.startsWith("?")) {
 
             System.out.println("Loading data ...");
 
             try {
                 String[] employees = readEmployees();
-                String searchName = args[0].substring(1).trim();
+                String searchName = command.substring(1).trim();
                 boolean employeeFound = false;
 
                 for (String employee : employees) {
@@ -127,7 +155,7 @@ public class EmployeeManager {
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].equals("c")) {
+        } else if (command.equals("c")) {
 
             System.out.println("Loading data ...");
 
@@ -150,21 +178,29 @@ public class EmployeeManager {
 
             System.out.println("Data Loaded.");
 
-        } else if (args[0].contains("u")) {
+        } else if (command.startsWith("u")) {
 
             System.out.println("Loading data ...");
 
             try {
                 String[] employees = readEmployees();
+                String employeeName = command.substring(1).trim();
+                boolean employeeFound = false;
 
                 for (int i = 0; i < employees.length; i++) {
 
-                    if (employees[i].equals(args[0].substring(1))) {
+                    if (employees[i].trim().equalsIgnoreCase(employeeName)) {
                         employees[i] = "Updated";
+                        employeeFound = true;
                     }
                 }
 
-                writeEmployees(employees);
+                if (employeeFound) {
+                    writeEmployees(employees);
+                    System.out.println("Employee updated successfully.");
+                } else {
+                    System.out.println("Employee not found.");
+                }
 
             } catch (Exception exception) {
                 System.out.println("Error updating employee.");
@@ -172,7 +208,7 @@ public class EmployeeManager {
 
             System.out.println("Data Updated.");
 
-        } else if (args[0].contains("d")) {
+        } else if (command.startsWith("d")) {
 
             System.out.println("Loading data ...");
 
@@ -181,9 +217,14 @@ public class EmployeeManager {
                     Arrays.asList(readEmployees())
                 );
 
-                employeeList.remove(args[0].substring(1));
+                String employeeName = command.substring(1).trim();
 
-                writeEmployees(employeeList.toArray(new String[0]));
+                if (employeeList.remove(employeeName)) {
+                    writeEmployees(employeeList.toArray(new String[0]));
+                    System.out.println("Employee deleted successfully.");
+                } else {
+                    System.out.println("Employee not found.");
+                }
 
             } catch (Exception exception) {
                 System.out.println("Error deleting employee.");
