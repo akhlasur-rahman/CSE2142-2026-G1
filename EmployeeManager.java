@@ -10,7 +10,7 @@ public class EmployeeManager {
     public static String[] readEmployees() throws IOException {
 
         BufferedReader reader = new BufferedReader(
-            new FileReader("employees.txt")
+            new FileReader(Constants.FILE_PATH)
         );
 
         String line = reader.readLine();
@@ -23,7 +23,7 @@ public class EmployeeManager {
     public static void writeEmployees(String[] employees) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(
-            new FileWriter("employees.txt")
+            new FileWriter(Constants.FILE_PATH)
         );
 
         writer.write(String.join(",", employees));
@@ -34,7 +34,7 @@ public class EmployeeManager {
     public static void appendEmployee(String employeeName) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(
-            new FileWriter("employees.txt", true)
+            new FileWriter(Constants.FILE_PATH, true)
         );
 
         writer.write(", " + employeeName);
