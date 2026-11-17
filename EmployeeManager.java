@@ -75,11 +75,9 @@ public class EmployeeManager {
                 String[] employees = readEmployees();
 
                 System.out.println(String.join(",", employees));
-
-                Random random = new Random();
-                int randomIndex = random.nextInt(employees.length);
-
-                System.out.println(employees[randomIndex]);
+                System.out.println(
+                    employees[new Random().nextInt(employees.length)]
+                );
 
             } catch (Exception exception) {
             }
@@ -91,8 +89,7 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                String employeeName = args[0].substring(1);
-                appendEmployee(employeeName);
+                appendEmployee(args[0].substring(1));
 
             } catch (Exception exception) {
             }
@@ -107,11 +104,10 @@ public class EmployeeManager {
                 String[] employees = readEmployees();
 
                 boolean found = false;
-                String searchName = args[0].substring(1);
 
                 for (int i = 0; i < employees.length && !found; i++) {
 
-                    if (employees[i].equals(searchName)) {
+                    if (employees[i].equals(args[0].substring(1))) {
                         System.out.println("Employee found!");
                         found = true;
                     }
@@ -128,8 +124,7 @@ public class EmployeeManager {
 
             try {
                 String[] employees = readEmployees();
-                String line = String.join(",", employees);
-                char[] characters = line.toCharArray();
+                char[] characters = String.join(",", employees).toCharArray();
 
                 boolean inWord = false;
                 int wordCount = 0;
@@ -160,11 +155,10 @@ public class EmployeeManager {
 
             try {
                 String[] employees = readEmployees();
-                String employeeName = args[0].substring(1);
 
                 for (int i = 0; i < employees.length; i++) {
 
-                    if (employees[i].equals(employeeName)) {
+                    if (employees[i].equals(args[0].substring(1))) {
                         employees[i] = "Updated";
                     }
                 }
@@ -181,14 +175,11 @@ public class EmployeeManager {
             System.out.println("Loading data ...");
 
             try {
-                String[] employees = readEmployees();
-                String employeeName = args[0].substring(1);
-
                 List<String> employeeList = new ArrayList<>(
-                    Arrays.asList(employees)
+                    Arrays.asList(readEmployees())
                 );
 
-                employeeList.remove(employeeName);
+                employeeList.remove(args[0].substring(1));
 
                 writeEmployees(employeeList.toArray(new String[0]));
 
